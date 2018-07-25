@@ -1,0 +1,6 @@
+*
+
+!.gitignore
+!.gitconfig
+!.zshrc
+!.vim/
