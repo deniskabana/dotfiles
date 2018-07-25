@@ -4,7 +4,6 @@ DISABLE_AUTO_TITLE="true"
 plugins=(vi-mode sudo colored-man-pages)
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$(ruby -e 'print Gem.user_dir')/bin:$PATH"
 source $ZSH/oh-my-zsh.sh
-source $ZSH/oh-my-zsh.sh
 export NODE_ENV='development'
 
 set editing-mode vi
@@ -15,39 +14,36 @@ alias gf='git fetch' # Git fetch
 alias gc='git commit' # Git commit
 alias gca='git commit --amend' # Git commit (ammend)
 alias gs='git status' # Git status
-alias gss='echo "" && git status -s' # Git status (changes only, compact)
+alias gss='echo "" && git status -s' # Git status - changes
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
 alias gchb='gch $(git branch --all | fzf)' # Change branch with fuzzy search
-alias gb='git checkout -b' # New branch + checkout
-alias gbl='git branch --all' # Git branch list
-alias gl='git log --pretty="%Cblue%h %Cred%ar %Cgreen(%an) %Creset%s"' # One line colorful pretty-print log
+alias gb='git checkout -b' # Git checkout -> new branch
+alias gbr='git branch' # Git branch
+alias gbl='git branch --all' # Git branch list (all)
+alias gl='git log --pretty="%Cblue%h %Cred%ar %Cgreen(%an) %Creset%s"'
 alias glg='gl --graph' # Git visual branch graph
 alias gshow='git show $(gl | fzf | cut -d \  -f1)' # Search & display commit details
 alias gd='git diff' # Git diff
 alias ga='git add' # Git add
-alias gad='git add -A' # Git add all
-alias gsvim='vim $(git status -s | fzf -m)' # Open unstaged file from git status in vim
+alias gad='git add -A' # Git add everything (-A)
+alias gsvim='vim $(git status -s | fzf -m)' # Vim unstaged files
 alias ghist='git show $(gl --follow $(fzf)| fzf | cut -d \  -f1 )' # File history in git
-alias gclr='gch . && git clean -fd' # DESTROY changes and staged/unstaged files
+alias gclr='gch . && git clean -fd' # DESTROY changes
 
 alias gmt='git mergetool' # Git start merge tool
 alias grc='git rebase --continue' # Rebase continue
 alias gra='git rebase --abort' # Rebase abort
 alias grs='git rebase --skip' # Rebase skip current
 
-alias vim='nvim' # Neovim alias
-
 alias ys='yarn start -s' # Yarn start
 alias y='yarn' # Yarn
 alias yr='yarn run' # Yarn run
 
-alias cat="pygmentize -g" # Colorized cat
-alias pacman='sudo pacman' # Sudo alias
-
 alias concepts='pushd ~/projects/concepts-catalogue' # cd to concepts
 alias fzv='vim $(fzf)' # Fuzzy-search and vim open
-alias fzp='fzf --preview "head -100 {}"' # Fuzzy search with file preview
+alias fzp='fzf --preview "head -100 {}"' # Fzf with preview
+alias fzps='fzf --preview "pygmentize {1}"' # Fzf pygmentize preview
 alias mci='mvn clean install' # Mvn clean install
 alias mi='mvn install' # Mvn install
 alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd && popd' # Quick mvn build
@@ -73,24 +69,25 @@ function branchd() { # Delete branch
     eval git branch -d $BRANCH
   fi
 }
-function push() { # Push current branch
+function push() { # Git push (current)
   BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-  REMOTE="$(git remote | fzf)"
+  REMOTE="$(git remote)"
   echo "Pushing to branch \e[33m$BRANCH\e[0m on \e[34m$REMOTE\e[0m..."
   eval git push origin $BRANCH
 }
-function pull() { # Pull rebase current branch
+function pull() { # Git pull -r (current)
   BRANCH="$(git rev-parse --abbrev-ref HEAD)"
   REMOTE="$(git remote)"
   echo "Pulling from branch \e[33m$BRANCH\e[0m on \e[34m$REMOTE\e[0m..."
   eval git pull --rebase $REMOTE $BRANCH
 }
-function rebase() { # Rebase to branch
-  REMOTE="$(git remote | fzf)"
-  echo "Rebasing to \e[34m$1\e[0m on $REMOTE..."
-  eval git pull --rebase $REMOTE $1
+function rebase() { # Git rebase onto ...
+  REMOTE="$(git remote)"
+  BRANCH="$(git branch -r | fzf | sed 's/\( \|\*\)//g')"
+  echo "Rebasing to \e[34m$BRANCH\e[0m on $REMOTE..."
+  eval git pull --rebase $REMOTE $BRANCH
 }
-function force() { # Force push (\w lease) current branch
+function force() { # Force push (lease)
   BRANCH="$(git rev-parse --abbrev-ref HEAD)"
   REMOTE="$(git remote)"
   echo "Are you sure you want to force-push to \e[33m$BRANCH\e[0m? \e[34m(y/\e[32;1mN\e[0m)"
@@ -100,7 +97,7 @@ function force() { # Force push (\w lease) current branch
     eval git push --force-with-lease $REMOTE $BRANCH
   fi
 }
-function finish() { # Git add, commit -m $1, push
+function finish() { # Add all, commit and push
   echo "Git add, commit and push..."
   git add -A
   git commit -m $1
@@ -108,11 +105,19 @@ function finish() { # Git add, commit -m $1, push
 }
 # DOCS_PARSE_END
 
+# Other non-documented aliases
+alias cat='pygmentize -g'
+alias pacman='sudo pacman'
+alias vim='nvim'
+
+# Load FZF, set fd as a default file finder (respects .gitignore)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
+# Enable zsh syntax highlighting
 source /home/denis/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Launch pure-prompt
 fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
 autoload -U promptinit; promptinit
 prompt pure
