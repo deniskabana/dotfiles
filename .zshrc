@@ -17,13 +17,13 @@ alias gs='git status' # Git status
 alias gss='echo "" && git status -s' # Git status - changes
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
-alias gchb='gch $(git branch --all | fzf)' # Change branch with fuzzy search
+alias gchb='gch $(git branch --all | fzf)' # Fuzzy git checkout
 alias gb='git checkout -b' # Git checkout -> new branch
 alias gbr='git branch' # Git branch
 alias gbl='git branch --all' # Git branch list (all)
 alias gl='git log --pretty="%Cblue%h %Cred%ar %Cgreen(%an) %Creset%s"'
 alias glg='gl --graph' # Git visual branch graph
-alias gshow='git show $(gl | fzf | cut -d \  -f1)' # Search & display commit details
+alias gshow='git show $(gl | fzf | cut -d \  -f1)' # Interactive git show
 alias gd='git diff' # Git diff
 alias ga='git add' # Git add
 alias gad='git add -A' # Git add everything (-A)
