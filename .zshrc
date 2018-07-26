@@ -17,6 +17,7 @@ alias gs='git status' # Git status
 alias gss='echo "" && git status -s' # Git status - changes
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
+alias gchf='gch $(gss | fzf | sed "s/\w\s//" )' # Git checkout file (fuzzy)
 alias gchb='gch $(git branch --all | fzf)' # Fuzzy git checkout
 alias gb='git checkout -b' # Git checkout -> new branch
 alias gbr='git branch' # Git branch
@@ -83,7 +84,7 @@ function pull() { # Git pull -r (current)
 }
 function rebase() { # Git rebase onto ...
   REMOTE="$(git remote)"
-  BRANCH="$(git branch -r | fzf | sed 's/\( \|\*\)//g')"
+  BRANCH="$(git branch -r | fzf | sed 's/\( \|\*\)//g' | sed 's/^[A-Za-z]*\///')"
   echo "Rebasing to \e[34m$BRANCH\e[0m on $REMOTE..."
   eval git pull --rebase $REMOTE $BRANCH
 }
