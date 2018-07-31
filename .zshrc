@@ -45,7 +45,7 @@ alias yr='yarn run' # Yarn run
 
 alias concepts='pushd ~/projects/concepts-catalogue' # cd to concepts
 alias fzv='vim $(fzf)' # Fuzzy-search and vim open
-alias fzps='fzf --preview "head -100 {}"' # Fzf with preview
+alias fzps='fzf --preview "head -60 {} | pygmentize"' # Fzf with preview
 alias mci='mvn clean install' # Mvn clean install
 alias mi='mvn install' # Mvn install
 alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd && popd' # Quick mvn build
