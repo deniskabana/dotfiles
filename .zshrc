@@ -32,7 +32,7 @@ alias gad='git add -A' # Git add everything (-A)
 alias gaf='ga $(glm | fzf --preview "git diff --color {} | diff-so-fancy") && gss' # Git add file (fuzzy)
 alias gsvim='vim $(git status -s | fzf -m)' # Vim unstaged files
 alias ghist='git show $(gl --follow $(fzf) | fzf | cut -d \  -f1 )' # File history in git
-alias gclr='gch . && git clean -fd' # DESTROY changes
+alias gclr='git reset . && gch . && git clean -fd' # DESTROY changes
 
 alias gmt='git mergetool' # Git start merge tool
 alias grc='git rebase --continue' # Rebase continue
