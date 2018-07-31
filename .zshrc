@@ -15,9 +15,10 @@ alias gc='git commit' # Git commit
 alias gca='git commit --amend' # Git commit (ammend)
 alias gs='git status' # Git status
 alias gss='echo "" && git status -s' # Git status - changes
+alias glm='git ls-files -m' # List unstaged, modified
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
-alias gchf='gch $(gss | sed "s/^\s*\w\s//" | fzf --preview "git diff --color {} | diff-so-fancy")' # Git checkout file (fuzzy)
+alias gchf='gch $(gss | sed "s/^\s*\(\w\|??\)\s//" | fzf --preview "git diff --color {} | diff-so-fancy") && gss' # Git checkout file (fuzzy)
 alias gchb='gch $(git branch --all | fzf)' # Fuzzy git checkout
 alias gb='git checkout -b' # Git checkout -> new branch
 alias gbr='git branch' # Git branch
@@ -28,7 +29,7 @@ alias gshow='git show $(gl | fzf | cut -d \  -f1)' # Interactive git show
 alias gd='git diff' # Git diff
 alias ga='git add' # Git add
 alias gad='git add -A' # Git add everything (-A)
-alias gaf='ga $(gss | sed "s/^\s*\w\s//" | fzf --preview "git diff --color {} | diff-so-fancy")' # Git checkout file (fuzzy)
+alias gaf='ga $(glm | fzf --preview "git diff --color {} | diff-so-fancy") && gss' # Git add file (fuzzy)
 alias gsvim='vim $(git status -s | fzf -m)' # Vim unstaged files
 alias ghist='git show $(gl --follow $(fzf) | fzf | cut -d \  -f1 )' # File history in git
 alias gclr='gch . && git clean -fd' # DESTROY changes
@@ -54,6 +55,16 @@ function tldr() { # TLDR: colored less output
 }
 function nrun() { # Node module run
   eval ./node_modules/.bin/$@
+}
+function unstage() { # Unstage file
+  FILE="$(gd --name-only --cached | fzf --preview 'git diff --staged --color {} | diff-so-fancy')"
+  
+  if [ -z "$FILE" ]
+  then
+    echo "Reset cancelled."
+  else
+    eval git reset $FILE && gss
+  fi
 }
 function branchd() { # Delete branch
   BRANCH="$(git branch | fzf | sed 's/\( \|\*\)//g')"
