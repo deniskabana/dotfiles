@@ -17,7 +17,7 @@ alias gs='git status' # Git status
 alias gss='echo "" && git status -s' # Git status - changes
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
-alias gchf='gch $(gss | fzf | sed "s/\w\s//" )' # Git checkout file (fuzzy)
+alias gchf='gch $(gss | sed "s/^\s*\w\s//" | fzf --preview "git diff --color {} | diff-so-fancy")' # Git checkout file (fuzzy)
 alias gchb='gch $(git branch --all | fzf)' # Fuzzy git checkout
 alias gb='git checkout -b' # Git checkout -> new branch
 alias gbr='git branch' # Git branch
@@ -28,8 +28,9 @@ alias gshow='git show $(gl | fzf | cut -d \  -f1)' # Interactive git show
 alias gd='git diff' # Git diff
 alias ga='git add' # Git add
 alias gad='git add -A' # Git add everything (-A)
+alias gaf='ga $(gss | sed "s/^\s*\w\s//" | fzf --preview "git diff --color {} | diff-so-fancy")' # Git checkout file (fuzzy)
 alias gsvim='vim $(git status -s | fzf -m)' # Vim unstaged files
-alias ghist='git show $(gl --follow $(fzf)| fzf | cut -d \  -f1 )' # File history in git
+alias ghist='git show $(gl --follow $(fzf) | fzf | cut -d \  -f1 )' # File history in git
 alias gclr='gch . && git clean -fd' # DESTROY changes
 
 alias gmt='git mergetool' # Git start merge tool
@@ -43,8 +44,7 @@ alias yr='yarn run' # Yarn run
 
 alias concepts='pushd ~/projects/concepts-catalogue' # cd to concepts
 alias fzv='vim $(fzf)' # Fuzzy-search and vim open
-alias fzp='fzf --preview "head -100 {}"' # Fzf with preview
-alias fzps='fzf --preview "pygmentize {1}"' # Fzf pygmentize preview
+alias fzps='fzf --preview "head -100 {}"' # Fzf with preview
 alias mci='mvn clean install' # Mvn clean install
 alias mi='mvn install' # Mvn install
 alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd && popd' # Quick mvn build
@@ -84,7 +84,13 @@ function pull() { # Git pull -r (current)
 }
 function rebase() { # Git rebase onto ...
   REMOTE="$(git remote)"
-  BRANCH="$(git branch -r | fzf | sed 's/\( \|\*\)//g' | sed 's/^[A-Za-z]*\///')"
+  BRANCH="$1"
+
+  if [ -z "$1" ]
+  then
+    BRANCH="$(git branch -r | fzf | sed 's/\( \|\*\)//g' | sed 's/^[A-Za-z]*\///')"
+  fi
+
   echo "Rebasing to \e[34m$BRANCH\e[0m on $REMOTE..."
   eval git pull --rebase $REMOTE $BRANCH
 }
