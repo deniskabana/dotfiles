@@ -46,8 +46,9 @@ alias yr='yarn run' # Yarn run
 alias concepts='pushd ~/projects/concepts-catalogue' # cd to concepts
 alias fzv='vim $(fzf)' # Fuzzy-search and vim open
 alias fzps='fzf --preview "head -60 {} | pygmentize"' # Fzf with preview
-alias mci='mvn clean install' # Mvn clean install
-alias mi='mvn install' # Mvn install
+alias mci='mvn clean install' # Maven clean install
+alias mi='mvn install' # Maven install
+alias mc='mvn clean' # Maven clean
 alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd && popd' # Quick mvn build
 
 function tldr() { # TLDR: colored less output
@@ -124,7 +125,7 @@ function finish() { # Add all, commit and push
 # DOCS_PARSE_END
 
 # Other non-documented aliases
-alias cat='pygmentize -g'
+alias scat='pygmentize -g'
 alias pacman='sudo pacman'
 alias vim='nvim'
 
