@@ -2,7 +2,7 @@ export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME=""
 DISABLE_AUTO_TITLE="true"
 plugins=(vi-mode sudo colored-man-pages)
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/bin:$PATH"
 source $ZSH/oh-my-zsh.sh
 export NODE_ENV='development'
 
