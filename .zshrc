@@ -33,12 +33,12 @@ alias gaf='ga $(glm | fzf --preview "git diff --color {} | diff-so-fancy") && gs
 alias gsvim='vim $(git status -s | fzf -m)' # Vim unstaged files
 alias ghist='git show $(gl --follow $(fzf) | fzf | cut -d \  -f1 )' # File history in git
 alias gclr='git reset . && gch . && git clean -fd' # DESTROY changes
-
 alias gmt='git mergetool' # Git start merge tool
 alias grc='git rebase --continue' # Rebase continue
 alias gra='git rebase --abort' # Rebase abort
 alias grs='git rebase --skip' # Rebase skip current
 
+alias fuck='echo "Running: \e[32msudo \e[35m\e[4m$(fc -ln -1)\e[0m" && sudo $(fc -ln -1)'
 alias ys='yarn start -s' # Yarn start
 alias y='yarn' # Yarn
 alias yr='yarn run' # Yarn run
