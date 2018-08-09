@@ -9,3 +9,5 @@ function! ClipboardPaste()
 endfunction
 
 colo snazzy
+
+hi Normal guibg=NONE ctermbg=NONE
