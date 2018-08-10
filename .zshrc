@@ -6,7 +6,23 @@ export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/bin:$PATH"
 source $ZSH/oh-my-zsh.sh
 export NODE_ENV='development'
 
-set editing-mode vi
+function zle-line-init zle-keymap-select {
+  # Change the cursor style depending on keymap mode.
+  if [[ "$SSH_CONNECTION" == '' ]] {
+    case $KEYMAP {
+      vicmd)
+        printf '\e[0 q' # Box.
+        ;;
+
+      viins|main)
+        printf '\e[6 q' # Vertical bar.
+        ;;
+    }
+  }
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
 set blink-matching-paren on
 
 # DOCS_PARSE_START
@@ -43,7 +59,7 @@ alias ys='yarn start -s' # Yarn start
 alias y='yarn' # Yarn
 alias yr='yarn run' # Yarn run
 
-alias concepts='pushd ~/projects/concepts-catalogue' # cd to concepts
+alias concepts='pushd ~/projects/concepts-catalogue > /dev/null' # cd to concepts
 alias fzv='vim $(fzf)' # Fuzzy-search and vim open
 alias fzps='fzf --preview "head -60 {} | pygmentize"' # Fzf with preview
 alias mci='mvn clean install' # Maven clean install
@@ -139,4 +155,10 @@ source /home/denis/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Launch pure-prompt
 fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
 autoload -U promptinit; promptinit
+
+# Directory overhead
+setopt AUTO_NAME_DIRS
+C=$HOME/projects/concepts-catalogue
+
 prompt pure
+PROMPT='%F{yellow}%* '$PROMPT
