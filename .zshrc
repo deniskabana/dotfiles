@@ -41,7 +41,7 @@ alias gbr='git branch' # Git branch
 alias gbl='git branch --all' # Git branch list (all)
 alias gl='git log --pretty="%Cblue%h %Cred%ar %Cgreen(%an) %Creset%s"'
 alias glg='gl --graph' # Git visual branch graph
-alias gshow='git show $(gl | fzf | cut -d \  -f1)' # Interactive git show
+alias gshow='git show $(gl | fzf | cut -d \  -f1) | less -r' # Interactive git show
 alias gd='git diff' # Git diff
 alias ga='git add' # Git add
 alias gad='git add -A' # Git add everything (-A)
@@ -142,8 +142,10 @@ function finish() { # Add all, commit and push
 
 # Other non-documented aliases
 alias scat='pygmentize -g'
-alias pacman='sudo pacman'
+alias pacman='yes | sudo pacman'
 alias vim='nvim'
+alias serve='concepts && cd catalogue-generator/target/catalogue-generator && http-server >/dev/null'
+alias CHR='concepts && node utils/dev/css-hot-reload --port 8081'
 
 # Load FZF, set fd as a default file finder (respects .gitignore)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
