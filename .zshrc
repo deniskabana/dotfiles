@@ -1,10 +1,10 @@
-export ZSH=$HOME/.oh-my-zsh
-ZSH_THEME=""
-DISABLE_AUTO_TITLE="true"
+export ZSH=$HOME/.oh-my-zsh # This had a reason, I'm sure => learn to document stuff early on, Denis
+# DISABLE_AUTO_TITLE="true" # Why did I disable this? ¯\(°_o)/¯
 plugins=(vi-mode sudo colored-man-pages)
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/bin:$PATH"
-source $ZSH/oh-my-zsh.sh
-export NODE_ENV='development'
+source $ZSH/oh-my-zsh.sh # What is this
+ZSH_THEME="" # No theme for pure-prompt
+export NODE_ENV='development' # Sure feels nice having the default explicit
 
 function zle-line-init zle-keymap-select {
   # Change the cursor style depending on keymap mode.
@@ -23,9 +23,9 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-set blink-matching-paren on
+set blink-matching-paren on # Google this later
 
-# DOCS_PARSE_START
+# Aliases and function who will be documented with ~/zsh_docs.sh
 alias gf='git fetch' # Git fetch
 alias gc='git commit' # Git commit
 alias gca='git commit --amend' # Git commit (ammend)
@@ -139,7 +139,6 @@ function finish() { # Add all, commit and push
   git commit -m $1
   push
 }
-# DOCS_PARSE_END
 
 # Other non-documented aliases
 alias scat='pygmentize -g'
@@ -147,6 +146,7 @@ alias pacman='yes | sudo pacman'
 alias vim='nvim'
 alias serve='concepts && cd catalogue-generator/target/catalogue-generator && http-server >/dev/null'
 alias CHR='concepts && node utils/dev/css-hot-reload --port 8081'
+alias x='clear'
 
 # Load FZF, set fd as a default file finder (respects .gitignore)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -167,4 +167,5 @@ setopt AUTO_NAME_DIRS
 C=$HOME/projects/concepts-catalogue
 
 prompt pure
+# Show current time with pure-prompt
 PROMPT='%F{yellow}%* '$PROMPT
