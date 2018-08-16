@@ -31,6 +31,7 @@ alias gc='git commit' # Git commit
 alias gca='git commit --amend' # Git commit (ammend)
 alias gs='git status' # Git status
 alias gss='echo "" && git status -s' # Git status - changes
+alias g="gss"
 alias glm='git ls-files -m' # List unstaged, modified
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
@@ -54,7 +55,7 @@ alias grc='git rebase --continue' # Rebase continue
 alias gra='git rebase --abort' # Rebase abort
 alias grs='git rebase --skip' # Rebase skip current
 
-alias fuck='echo "Running: \e[32msudo \e[35m\e[4m$(fc -ln -1)\e[0m" && sudo $(fc -ln -1)'
+alias fuck='echo "Running: \e[32msudo \e[35m\e[4m$(fc -ln -1)\e[0m" && sudo $(fc -ln -1)' # Re-run as sudo
 alias ys='yarn start -s' # Yarn start
 alias y='yarn' # Yarn
 alias yr='yarn run' # Yarn run
@@ -75,7 +76,7 @@ function nrun() { # Node module run
 }
 function unstage() { # Unstage file
   FILE="$(gd --name-only --cached | fzf --preview 'git diff --staged --color {} | diff-so-fancy')"
-  
+
   if [ -z "$FILE" ]
   then
     echo "Reset cancelled."
@@ -110,7 +111,7 @@ function pull() { # Git pull -r (current)
   echo "Pulling from branch \e[33m$BRANCH\e[0m on \e[34m$REMOTE\e[0m..."
   eval git pull --rebase $REMOTE $BRANCH
 }
-function rebase() { # Git rebase onto ...
+function rebase() { # Git rebase onto ?$1
   REMOTE="$(git remote)"
   BRANCH="$1"
 
@@ -152,7 +153,10 @@ alias CHR='concepts && node utils/dev/css-hot-reload --port 8081'
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 # Enable zsh syntax highlighting
-source /home/denis/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Enable auto-closing of paired symbols
+source ~/zsh-autopair/autopair.zsh
 
 # Launch pure-prompt
 fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
