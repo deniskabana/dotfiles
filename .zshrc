@@ -1,27 +1,13 @@
+ZSH_THEME="" # No theme for pure-prompt
 export ZSH=$HOME/.oh-my-zsh # This had a reason, I'm sure => learn to document stuff early on, Denis
 # DISABLE_AUTO_TITLE="true" # Why did I disable this? ¯\(°_o)/¯
-plugins=(vi-mode sudo colored-man-pages)
+plugins=(colored-man-pages)
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/bin:$PATH"
 source $ZSH/oh-my-zsh.sh # What is this
-ZSH_THEME="" # No theme for pure-prompt
 export NODE_ENV='development' # Sure feels nice having the default explicit
 
-function zle-line-init zle-keymap-select {
-  # Change the cursor style depending on keymap mode.
-  if [[ "$SSH_CONNECTION" == '' ]] {
-    case $KEYMAP {
-      vicmd)
-        printf '\e[0 q' # Box.
-        ;;
-
-      viins|main)
-        printf '\e[6 q' # Vertical bar.
-        ;;
-    }
-  }
-}
-zle -N zle-line-init
-zle -N zle-keymap-select
+# Vi mode
+bindkey -v
 
 set blink-matching-paren on # Google this later
 
@@ -31,7 +17,7 @@ alias gc='git commit' # Git commit
 alias gca='git commit --amend' # Git commit (ammend)
 alias gs='git status' # Git status
 alias gss='echo "" && git status -s' # Git status - changes
-alias g="gss"
+alias g='git status >/dev/null && echo "\n \e[0m\e[4m\e[34m$(git rev-parse --abbrev-ref HEAD)\e[0m" && git status -s' # Git shortcut
 alias glm='git ls-files -m' # List unstaged, modified
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
@@ -60,13 +46,13 @@ alias ys='yarn start -s' # Yarn start
 alias y='yarn' # Yarn
 alias yr='yarn run' # Yarn run
 
-alias concepts='pushd ~/projects/concepts-catalogue > /dev/null' # cd to concepts
+alias concepts='cd ~/projects/concepts-catalogue > /dev/null' # cd to concepts
 alias fzv='vim $(fzf)' # Fuzzy-search and vim open
 alias fzps='fzf --preview "head -60 {} | pygmentize"' # Fzf with preview
 alias mci='mvn clean install' # Maven clean install
 alias mi='mvn install' # Maven install
 alias mc='mvn clean' # Maven clean
-alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd && popd' # Quick mvn build
+alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd 2>/dev/null && popd 2>/dev/null' # Quick mvn build
 
 function tldr() { # TLDR: colored less output
   pygmentize -g $@ | less -r
@@ -166,6 +152,8 @@ autoload -U promptinit; promptinit
 setopt AUTO_NAME_DIRS
 C=$HOME/projects/concepts-catalogue
 
+# Launch pure-prompt
 prompt pure
+
 # Show current time with pure-prompt
 PROMPT='%F{yellow}%* '$PROMPT
