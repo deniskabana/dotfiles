@@ -1,7 +1,8 @@
-#1/bin/bash
+#!/bin/bash
 
 # Set color constants
 RESET="\e[0m"
+
 BOLD="\e[1m"
 DIM="\e[2m"
 UNDERLINE="\e[4m"
@@ -13,219 +14,187 @@ MAGENTA="\e[35m"
 CYAN="\e[36m"
 
 # Initial feedback
-echo "$YELLOW$BOLD Installing needed applications... $RESET"
-
-# Visual feedback - status
-log() {
-  echo "$1$RESET"
-}
-stat_installing() {
-  log "$MAGENTA Currently installing:$RESET $UNDERLINE$1..."
-}
-stat_success() {
-  log "$GREEN Successfuly installed $1!"
-}
+clear
+echo "$YELLOW$BOLD Setting up machine...$RESET\n"
 
 # Update the system
-log "$CYAN Updating the core system..."
+echo "$CYAN Updating the core system...$RESET"
 if command -v apt-get 2>/dev/null >/dev/null; then
-  log "$CYAN Running apt-get update"
+  echo "$CYAN Running apt-get update"
   sudo apt-get update >/dev/null
-  log "$CYAN Running apt-get upgrade"
-  sudo apt-get upgrade >/dev/null
+  echo "$CYAN Running apt-get upgrade"
+  sudo apt-get -y upgrade >/dev/null
 fi
 if command -v pacman 2>/dev/null >/dev/null; then
-  log "$CYAN Running pacman -Syy..."
+  echo "$CYAN Running pacman -Syy..."
   sudo pacman -Syy >/dev/null
 fi
-log "$GREEN System successfully updated!"
+echo "$RESET$GREEN System successfully updated!$RESET"
 
-# Installing tools
-ipacman() {
+# Install functions
+ifpacman() {
   if command -v pacman 2>/dev/null >/dev/null; then
     yes | sudo pacman -S $@ > /dev/null
   fi
 }
-iapt() {
+ifapt() {
   if command -v apt 2>/dev/null >/dev/null; then
     sudo apt -y install $@ > /dev/null
   fi
 }
-iaptget() {
+ifaptget() {
   if command -v apt-get 2>/dev/null >/dev/null; then
     sudo apt-get -y install $@ > /dev/null
   fi
 }
 
 # Install basic tools
-log "$YELLOW Installing curl and wget"
-iaptget curl
-iaptget wget
-ipacman curl
-ipacman wget
-stat_success "curl and wget"
+echo "$YELLOW Installing curl and wget$RESET"
+ifaptget curl
+ifaptget wget
+ifpacman curl
+ifpacman wget
+echo "$GREEN Installed curl and wget$RESET\n"
 
 # Install yaourt if available
 if command -v pacman 2>/dev/null >/dev/null; then
-  log("$CYAN Try installing yaourt...")
+  echo "$CYAN Try installing yaourt... $RESET"
   sudo touch /etc/pacman.conf
   sudo echo \[archlinuxfr\] >> /etc/pacman.conf
   sudo echo SigLevel = Never >> /etc/pacman.conf
   sudo echo Server = http://repo.archlinux.fr/\$arch >> /etc/pacman.conf
   sudo pacman -Sy yaourt > /dev/null
-  stat_success "yaourt"
+  echo "$GREEN Installed yaourt$RESET\n"
 fi
 
 # Install git
-if command -v git 2>/dev/null >/dev/null; then
-  stat_installing "git"
-  ipacman git-all
-  iapt git-all
-  stat_success "git"
-else
-  log "$GREEN Git is already installed on this system."
-fi
+echo "$YELLOW Installing git$RESET"
+ifpacman git
+ifaptget git
+echo "$GREEN Installed git$RESET\n"
+
+# Install zsh
+echo "$YELLOW Installing zsh$RESET"
+ifpacman zsh
+ifaptget zsh
+echo "$GREEN Installed zsh$RESET\n"
 
 # Clone my repository in home folder (includes zshrc and vim settings)
-log "$CYAN Download dotfiles into ~"
+echo "$CYAN Download dotfiles into ~$RESET"
 cd ~
 git init
 git remote add origin https://github.com/deniskabana/dotfiles
 git fetch origin
 git checkout -b master --track origin/master
-log "$GREEN That went well!"
-
-# Install neovim
-if command -v neovim 2>/dev/null >/dev/null; then
-  stat_installing "neovim"
-  ipacman neovim
-  ipacman python-neovim
-  iaptget neovim
-  iaptget python3-neovim
-  stat_success "neovim"
-else
-  log "$GREEN neovim is already installed on this system."
-fi
-
-# Install vim-plug
-stat_installing "vim-plug"
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-stat_success "vim-plug"
-
-# Clone nzenvim
-stat_installing "nzenvim"
-cd ~/.config
-git clone https://github.com/deniskabana/nzenvim nvim
-cd ~
-stat_success "nzenvim"
+echo "$GREEN That went well!$RESET\n"
 
 # Install nodejs
-stat_installing "nodejs"
+echo "$YELLOW Installing nodejs$RESET"
 if command -v apt-get 2>/dev/null >/dev/null; then
   curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-  iaptget nodejs
+  ifaptget nodejs
 fi
-ipacman nodejs npm
-stat_success "nodejs"
+ifpacman nodejs npm
+echo "$GREEN Installed nodejs$RESET\n"
 
 # Install yarn
-stat_installing "yarn"
+echo "$YELLOW Installing yarn$RESET"
 if command -v apt-get 2>/dev/null >/dev/null; then
   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-  sudo apt-get update && iaptget yarn
+  sudo apt-get update && ifaptget yarn
 fi
-ipacman yarn
-stat_success "yarn"
+ifpacman yarn
+echo "$GREEN Installed yarn$RESET\n"
+
+# Install pure-prompt
+echo "$YELLOW Installing pure-prompt$RESET"
+sudo yarn global add pure-prompt >/dev/null
+echo "$GREEN Installed pure-prompt$RESET\n"
+
+# Download zsh plugins I use
+echo "$YELLOW Installing zsh plugins (autopair, syntax highlight)"
+git clone https://github.com/hlissner/zsh-autopair
+git clone https://github.com/zsh-users/zsh-syntax-highlighting
+echo "$GREEN Installed zsh plugins$RESET\n"
+
+# Install fzf
+echo "$YELLOW Installing fzf$RESET"
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+rm -rf ~/.fzf
+echo "$GREEN Installed fzf$RESET\n"
+
+# Install neovim
+echo "$YELLOW Installing neovim$RESET"
+ifpacman neovim
+ifpacman python-neovim
+ifaptget neovim
+ifaptget python3-neovim
+echo "$GREEN Installed neovim$RESET\n"
+
+# Install vim-plug
+echo "$YELLOW Installing vim-plug$RESET"
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+echo "$GREEN Installed vim-plug$RESET\n"
+
+# Clone nzenvim
+echo "$YELLOW Installing nzenvim$RESET"
+cd ~/.config
+git clone https://github.com/deniskabana/nzenvim nvim
+cd ~
+echo "$GREEN Installed nzenvim$RESET\n"
 
 # Install diff-so-fancy
-stat_installing "diff-so-fancy"
-sudo yarn global add diff-so-fancy
-git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
-git config --global color.ui true
-git config --global color.diff-highlight.oldNormal    "red bold"
-git config --global color.diff-highlight.oldHighlight "red bold 52"
-git config --global color.diff-highlight.newNormal    "green bold"
-git config --global color.diff-highlight.newHighlight "green bold 22"
-git config --global color.diff.meta       "yellow"
-git config --global color.diff.frag       "magenta bold"
-git config --global color.diff.commit     "yellow bold"
-git config --global color.diff.old        "red bold"
-git config --global color.diff.new        "green bold"
-git config --global color.diff.whitespace "red reverse"
-stat_success "diff-so-fancy"
-
-# Install zsh
-stat_installing "zsh (latest)"
-iaptget zsh
-ipacman zsh
-stat_success "zsh (latest)"
+echo "$YELLOW Installing diff-so-fancy$RESET"
+sudo yarn global add diff-so-fancy >/dev/null
+echo "$GREEN Installed diff-so-fancy$RESET\n"
 
 # Install oh-my-zsh
-stat_installing "oh-my-zsh"
+echo "$YELLOW Installing oh-my-zsh$RESET"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-stat_success "oh-my-zsh"
-
-# Install zsh-syntax-highlight
-stat_installing "zsh-syntax-highlighting"
-cd ~
-git clone https://github.com/zsh-users/zsh-syntax-highlighting
-stat_success "zsh-syntax-highlighting"
+echo "$GREEN Installed oh-my-zsh$RESET\n"
 
 # Install fd
-stat_installing "fd"
-iaptget fd
-ipacman fd
-stat_success "fd"
+echo "$YELLOW Installing fd$RESET"
+if command -v dpkg 2>/dev/null >/dev/null; then
+  cd ~
+  curl -LO https://github.com/sharkdp/fd/releases/download/v7.1.0/fd-musl_7.1.0_amd64.deb
+  sudo dpkg -i fd-musl_7.1.0_amd64.deb
+fi
+ifpacman fd
+echo "$GREEN Installed fd$RESET\n"
 
-# Install ripgrep
-stat_installing "ripgrep"
+# Install rigrep
+echo "$YELLOW Installing ripgrep$RESET"
 if command -v dpkg 2>/dev/null >/dev/null; then
   curl -LO https://github.com/BurntSushi/ripgrep/releases/download/0.9.0/ripgrep_0.9.0_amd64.deb
   sudo dpkg -i ripgrep_0.9.0_amd64.deb
 fi
-ipacman ripgrep
-stat_success "ripgrep"
-
-# Install pure-prompt
-stat_installing "pure-prompt"
-sudo yarn global add pure-prompt
-stat_success "pure-prompt"
-
-# Install fzf
-stat_installing "fzf"
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
-rm -rf ~/.fzf
-stat_success "fzf"
-
-# Install pip
-stat_installing "pip"
-cd ~
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python get-pip.py
-rm get-pip.py
-stat_success "pip"
+ifpacman ripgrep
+echo "$GREEN Installed ripgrep$RESET\n"
 
 # Install pygmentize
+echo "$YELLOW Installing pygments$RESET"
 if command -v pip 2>/dev/null >/dev/null; then
   stat_installing "pygmentize"
   sudo pip install Pygments
   stat_success "pygmentize"
 fi
+echo "$GREEN Installed pygments$RESET\n"
 
 # Install java jre
-stat_installing "java"
+echo "$YELLOW Installing java$RESET"
 if command -v apt-get 2>/dev/null >/dev/null; then
-  iaptget default-jre default-jdk
+  ifaptget default-jre default-jdk
 fi
 if command -v pacman 2>/dev/null >/dev/null; then
-  ipacman jre10-openjdk-headless jre10-openjdk jdk10-openjdk openjdk10-doc openjdk10-src
+  ifpacman jre10-openjdk-headless jre10-openjdk jdk10-openjdk openjdk10-doc openjdk10-src
 fi
-stat_success "java"
+echo "$GREEN Installed java$RESET\n"
 
 # Wrap up
-log("\n$GREEN We are now all set, baby!")
+clear
+echo "$MAGENTA We are now all set, baby!$RESET"
 zsh
-exit
