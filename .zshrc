@@ -40,6 +40,7 @@ alias gmt='git mergetool' # Git start merge tool
 alias grc='git rebase --continue' # Rebase continue
 alias gra='git rebase --abort' # Rebase abort
 alias grs='git rebase --skip' # Rebase skip current
+alias xnode='sudo killall node' # Kill all node instances
 
 alias fuck='echo "Running: \e[32msudo \e[35m\e[4m$(fc -ln -1)\e[0m" && sudo $(fc -ln -1)' # Re-run as sudo
 alias ys='yarn start -s' # Yarn start
