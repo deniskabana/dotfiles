@@ -27,7 +27,7 @@ if command -v apt-get 2>/dev/null >/dev/null; then
 fi
 if command -v pacman 2>/dev/null >/dev/null; then
   echo "$CYAN Running pacman -Syy..."
-  sudo pacman -Syy >/dev/null
+  yes | sudo pacman -Syy >/dev/null
 fi
 echo "$RESET$GREEN System successfully updated!$RESET"
 
@@ -78,6 +78,11 @@ echo "$YELLOW Installing zsh$RESET"
 ifpacman zsh
 ifaptget zsh
 echo "$GREEN Installed zsh$RESET\n"
+
+# Install oh-my-zsh
+echo "$YELLOW Installing oh-my-zsh$RESET"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+echo "$GREEN Installed oh-my-zsh$RESET\n"
 
 # Clone my repository in home folder (includes zshrc and vim settings)
 echo "$CYAN Download dotfiles into ~$RESET"
@@ -150,11 +155,6 @@ echo "$GREEN Installed nzenvim$RESET\n"
 echo "$YELLOW Installing diff-so-fancy$RESET"
 sudo yarn global add diff-so-fancy >/dev/null
 echo "$GREEN Installed diff-so-fancy$RESET\n"
-
-# Install oh-my-zsh
-echo "$YELLOW Installing oh-my-zsh$RESET"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-echo "$GREEN Installed oh-my-zsh$RESET\n"
 
 # Install fd
 echo "$YELLOW Installing fd$RESET"
