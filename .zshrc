@@ -53,7 +53,7 @@ alias fzps='fzf --preview "head -60 {} | pygmentize"' # Fzf with preview
 alias mci='mvn clean install' # Maven clean install
 alias mi='mvn install' # Maven install
 alias mc='mvn clean' # Maven clean
-alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd 2>/dev/null && popd 2>/dev/null' # Quick mvn build
+alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd 2>/dev/null && concepts' # Quick mvn build
 
 function tldr() { # TLDR: colored less output
   pygmentize -g $@ | less -r
