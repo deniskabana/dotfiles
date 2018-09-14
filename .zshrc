@@ -1,7 +1,7 @@
 ZSH_THEME="" # No theme for pure-prompt
 export ZSH=$HOME/.oh-my-zsh # This had a reason, I'm sure => learn to document stuff early on, Denis
 # DISABLE_AUTO_TITLE="true" # Why did I disable this? ¯\(°_o)/¯
-plugins=(colored-man-pages)
+plugins=(colored-man-pages zsh-autosuggestions)
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/bin:$PATH"
 source $ZSH/oh-my-zsh.sh # What is this
 export NODE_ENV='development' # Sure feels nice having the default explicit
@@ -199,5 +199,35 @@ C=$HOME/projects/concepts-catalogue
 # Launch pure-prompt
 prompt pure
 
+# ZLE hooks for prompt's vi mode status
+function zle-line-init zle-keymap-select {
+# Change the cursor style depending on keymap mode.
+if [[ "$SSH_CONNECTION" == '' ]] {
+  case $KEYMAP {
+    vicmd)
+      printf '\e[0 q' # Box.
+      ;;
+
+    viins|main)
+      printf '\e[6 q' # Vertical bar.
+      ;;
+    }
+  }
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
 # Show current time with pure-prompt
 PROMPT='%F{yellow}%* '$PROMPT
+
+# If using autosuggestions, apply this
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
+
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
