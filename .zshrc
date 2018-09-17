@@ -156,6 +156,9 @@ function finishc() { # Finish concepts task/branch - automated
 
   echo "\e[32mFinal commit message: \e[0m\e[35m$TASK_ID $MSG\e[0m"
 
+  gad
+  gc -m "$TASK_ID $MSG"
+
   # Rebase to develop?
   echo "\e[33mDo you want to rebase to \e[34mdevelop\e[33m?\e[0m (\e[31my\e[0m/\e[1mN\e[0m)"
   read REBASE
@@ -165,7 +168,7 @@ function finishc() { # Finish concepts task/branch - automated
   fi
 
   # Success
-  finish "$TASK_ID $MSG"
+  push
 }
 alias docs='~/zsh_docs.sh' # Display my functions docs
 
