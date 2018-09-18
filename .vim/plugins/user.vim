@@ -8,6 +8,6 @@
   "let @@ = system('xsel --clipboard --output')
 "endfunction
 
-colo snazzy
+"colo snazzy
 
-hi Normal guibg=NONE ctermbg=NONE
+"hi Normal guibg=NONE ctermbg=NONE
