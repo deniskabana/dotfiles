@@ -16,4 +16,7 @@
 	whitespace = red reverse
 [user]
 	email = denis.kabana@gmail.com
-	name = deniskabana
+	name = Denis Kabana
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
