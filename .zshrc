@@ -83,7 +83,7 @@ function branchd() { # Delete a branch
   read REPLY
   if [[ $REPLY =~ ^[Yy]$ ]]
   then
-    eval git branch -d $BRANCH
+    eval git branch -D $BRANCH
   fi
 }
 function push() { # Git push (current branch)
