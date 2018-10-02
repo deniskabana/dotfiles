@@ -21,7 +21,7 @@ alias g='git status >/dev/null && echo "\n \e[0m\e[4m\e[34m$(git rev-parse --abb
 alias glm='git ls-files -m' # List unstaged and modified
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
-alias gchf='gch $(gss | sed "s/^\s*\(\w\|??\)\s//" | fzf --preview "git diff --color {} | diff-so-fancy") && gss' # Git checkout file (fuzzy pick)
+alias gchf='gch $(gss | sed -e "s/^[[:space:]]*\([A-Za-z0-9]+\|??\)[[:space:]]//" | fzf --preview "git diff --color {} | diff-so-fancy") && gss' # Git checkout file (fuzzy pick)
 alias gchb='gch $(git branch --all | fzf)' # Fuzzy git checkout to a branch
 alias gb='git checkout -b' # Git checkout to new branch
 alias gbr='git branch' # Git branch
@@ -33,7 +33,7 @@ alias gd='git diff' # Git diff
 alias ga='git add' # Git add $@
 alias gad='git add -A' # Git add everything (-A)
 alias gaf='ga $(glm | fzf --preview "git diff --color {} | diff-so-fancy") && gss' # Git fuzzy add unstaged file
-alias gsvim='vim $(git status -s | fzf -m)' # Fuzzy open from unstaged files in vim
+alias gsvim='vim $(git status -s | fzf -m | sed -e "s/[A-Z]*[[:space:]]*//")' # Fuzzy open from unstaged files in vim
 alias ghist='git show $(gl --follow $(fzf) | fzf | cut -d \  -f1 )' # File history in git (fuzzy pick)
 alias gclr='git reset . && gch . && git clean -fd' # DESTROY ALL CHANGES
 alias gmt='git mergetool' # Git start merge tool
@@ -72,13 +72,13 @@ function unstage() { # Unstage file (fuzzy with diff preview)
   fi
 }
 function branchd() { # Delete a branch
-  BRANCH="$(git branch | fzf | sed 's/\( \|\*\)//g')"
+  BRANCH="$(git branch | fzf | sed -e 's/\( \|\*\)//g')"
   CUR_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
   echo "Delete branch \e[33m$BRANCH\e[0m? \e[34m(y/\e[32;1mN\e[0m)"
   if [[ $BRANCH = $CUR_BRANCH ]]
   then
     echo "Switching branch to delete current branch."
-    eval git checkout --quiet $(git branch | rg '^\s+\w' | head -n 1)
+    eval git checkout --quiet $(git branch | rg '^[[:space:]]+[A-Za-z0-9]+' | head -n 1)
   fi
   read REPLY
   if [[ $REPLY =~ ^[Yy]$ ]]
@@ -104,7 +104,7 @@ function rebase() { # Git rebase onto $1 or fzf result
 
   if [ -z "$1" ]
   then
-    BRANCH="$(git branch -r | fzf | sed 's/\( \|\*\)//g' | sed 's/^[A-Za-z]*\///')"
+    BRANCH="$(git branch -r | fzf | sed -E 's/^[[:space:]]*[A-Za-z0-9]+\///')"
   fi
 
   echo "Rebasing to \e[34m$BRANCH\e[0m on $REMOTE..."
@@ -128,8 +128,8 @@ function finish() { # Add all, commit message $1 and push
 }
 function finishc() { # Finish concepts task/branch - automated
   CUR_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-  DEFAULT_TASK_ID="$(echo $CUR_BRANCH | sed -E "s/^feature\/(\w+)-([0-9]{1,5})-.*/\1-\2/")"
-  DEFAULT_MSG="$(echo $CUR_BRANCH | sed -E "s/^feature\/\w+-[0-9]{1,5}-(.*)/\1/" | sed -E "s/-/ /g")"
+  DEFAULT_TASK_ID="$(echo $CUR_BRANCH | sed -E "s/^feature\/([A-Za-z0-9]+)-([0-9]{1,5})-.*/\1-\2/")"
+  DEFAULT_MSG="$(echo $CUR_BRANCH | sed -E "s/^feature\/[A-Za-z0-9]+-[0-9]{1,5}-(.*)/\1/" | sed -E "s/-/ /g")"
 
   TASK_ID=""
   MSG=""
