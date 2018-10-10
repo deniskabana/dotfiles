@@ -21,14 +21,14 @@ alias g='git status >/dev/null && echo "\n \e[0m\e[4m\e[34m$(git rev-parse --abb
 alias glm='git ls-files -m' # List unstaged and modified
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
-alias gchf='gch $(gss | sed -e "s/^[[:space:]]*\([A-Za-z0-9]+\|??\)[[:space:]]//" | fzf --preview "git diff --color {} | diff-so-fancy") && gss' # Git checkout file (fuzzy pick)
+alias gchf='gch $(git ls-files -m | fzf --preview "git diff --color {} | diff-so-fancy" | sed -e "s/^.{1,3}[[:space:]]//") && gss' # Git checkout file (fuzzy pick)
 alias gchb='gch $(git branch --all | fzf)' # Fuzzy git checkout to a branch
 alias gb='git checkout -b' # Git checkout to new branch
 alias gbr='git branch' # Git branch
 alias gbl='git branch --all' # Git branch list (all)
 alias gl='git log --pretty="%Cblue%h %Cred%ar %Cgreen(%an) %Creset%s"' # Git log
 alias glg='gl --graph' # Git visual branch graph
-alias gshow='git show $(gl | fzf | cut -d \  -f1) | less -r' # Git show (interactive)
+alias gshow='git show $(gl | fzf | cut -d \  -f1)' # Git show (interactive)
 alias gd='git diff' # Git diff
 alias ga='git add' # Git add $@
 alias gad='git add -A' # Git add everything (-A)
@@ -124,50 +124,6 @@ function finish() { # Add all, commit message $1 and push
   echo "Git add, commit and push..."
   git add -A
   git commit -m $1
-  push
-}
-function finishc() { # Finish concepts task/branch - automated
-  CUR_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-  DEFAULT_TASK_ID="$(echo $CUR_BRANCH | sed -E "s/^feature\/([A-Za-z0-9]+)-([0-9]{1,5})-.*/\1-\2/")"
-  DEFAULT_MSG="$(echo $CUR_BRANCH | sed -E "s/^feature\/[A-Za-z0-9]+-[0-9]{1,5}-(.*)/\1/" | sed -E "s/-/ /g")"
-
-  TASK_ID=""
-  MSG=""
-
-  # Get task ID
-  echo "\e[34mEnter task ID or leave empty to use default\e[0m \e[2m\e[4m($DEFAULT_TASK_ID)\e[0m"
-  read USER_TASK_ID
-  if [ -z "$USER_TASK_ID" ]
-  then
-    TASK_ID=$DEFAULT_TASK_ID
-  else
-    TASK_ID=$USER_TASK_ID
-  fi
-
-  # Get commit message
-  echo "\e[34mEnter commit message or leave empty to use default\e[0m \e[2m\e[4m($DEFAULT_MSG)\e[0m"
-  read USER_MSG
-  if [ -z "$USER_MSG" ]
-  then
-    MSG=$DEFAULT_MSG
-  else
-    MSG=$USER_MSG
-  fi
-
-  echo "\e[32mFinal commit message: \e[0m\e[35m$TASK_ID $MSG\e[0m"
-
-  gad
-  gc -m "$TASK_ID $MSG"
-
-  # Rebase to develop?
-  echo "\e[33mDo you want to rebase to \e[34mdevelop\e[33m?\e[0m (\e[31my\e[0m/\e[1mN\e[0m)"
-  read REBASE
-  if [[ $REBASE =~ ^[Yy]$ ]]
-  then
-    rebase develop
-  fi
-
-  # Success
   push
 }
 alias docs='~/zsh_docs.sh' # Display my functions docs
