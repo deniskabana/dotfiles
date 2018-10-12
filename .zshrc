@@ -134,7 +134,6 @@ alias pacman='yes | sudo pacman'
 alias vim='nvim'
 alias serve='concepts && cd catalogue-generator/target/catalogue-generator && http-server >/dev/null'
 alias CHR='concepts && node utils/dev/css-hot-reload --port 8081'
-alias x='clear'
 alias osrs='java -jar ~/Documents/RuneLite.jar --mode=OFF'
 
 # Load FZF, set fd as a default file finder (respects .gitignore)
