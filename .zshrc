@@ -44,6 +44,7 @@ alias xnode='sudo killall node' # Kill all node instances
 
 alias fuck='echo "Running: \e[32msudo \e[35m\e[4m$(fc -ln -1)\e[0m" && sudo $(fc -ln -1)' # Re-run as sudo
 alias ys='yarn start -s' # Yarn start
+alias yd='yarn run start:lite' # Yarn start dev-lite (AB/DEU)
 alias y='yarn' # Yarn
 alias yr='yarn run' # Yarn run
 
