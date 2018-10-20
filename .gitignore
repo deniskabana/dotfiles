@@ -3,7 +3,8 @@
 !.gitignore
 !.gitconfig
 !.zshrc
-!.vim/
 !zsh_docs.sh
 !machine_setup.sh
 !create-bootable-usb-mac.sh
+!install-oh-my-zsh.sh
+!install-fzf.sh

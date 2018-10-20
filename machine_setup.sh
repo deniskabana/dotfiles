@@ -121,7 +121,8 @@ echo -e "$GREEN Installed zsh plugins$RESET\n"
 # Install fzf
 echo -e "$YELLOW Installing fzf$RESET"
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+cd ~/.fzf
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/deniskabana/dotfiles/master/install-fzf.sh)"
 rm -rf ~/.fzf
 echo -e "$GREEN Installed fzf$RESET\n"
 
@@ -191,10 +192,12 @@ echo -e "$GREEN Installed java$RESET\n"
 
 # Install oh-my-zsh
 echo -e "$YELLOW Installing oh-my-zsh$RESET"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/deniskabana/dotfiles/master/install-oh-my-zsh.sh)"
 echo -e "$GREEN Installed oh-my-zsh$RESET\n"
 
 # Wrap up
 clear
 echo -e "$MAGENTA We are now all set, baby!$RESET"
-zsh
+rm .zshrc
+mv .zshrc.pre-oh-my-zsh .zshrc
+env zsh -l
