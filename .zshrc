@@ -158,24 +158,6 @@ C=$HOME/projects/concepts-catalogue
 # Launch pure-prompt
 prompt pure
 
-# ZLE hooks for prompt's vi mode status
-function zle-line-init zle-keymap-select {
-# Change the cursor style depending on keymap mode.
-if [[ "$SSH_CONNECTION" == '' ]] {
-  case $KEYMAP {
-    vicmd)
-      printf '\e[0 q' # Box.
-      ;;
-
-    viins|main)
-      printf '\e[6 q' # Vertical bar.
-      ;;
-    }
-  }
-}
-zle -N zle-line-init
-zle -N zle-keymap-select
-
 # Show current time with pure-prompt
 PROMPT='%F{yellow}%* '$PROMPT
 
