@@ -18,6 +18,7 @@ alias gca='git commit --amend' # Git commit amend
 alias gs='git status' # Git status
 alias gss='echo "" && git status -s' # Git status - short
 alias g='git status >/dev/null && echo "\n \e[0m\e[4m\e[34m$(git rev-parse --abbrev-ref HEAD)\e[0m" && git status -s' # Git superpowered shorthand
+alias gbackup='git branch $(git rev-parse --abbrev-ref HEAD)_BACKUP && echo -e "\e[0m\e[34mCreated a new backup branch!\e[0m"' # Create git backup
 alias glm='git ls-files -m' # List unstaged and modified
 alias gsh='git stash' # Git stash
 alias gch='git checkout' # Git checkout
