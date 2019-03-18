@@ -83,8 +83,10 @@ echo -e "$CYAN Download dotfiles into ~$RESET"
 cd ~
 git init
 git remote add origin https://github.com/deniskabana/dotfiles
-git pull origin master
-git reset HEAD --hard
+git fetch
+git checkout -b backup
+git checkout -t origin/master -f
+git branch -D backup
 echo -e "$GREEN That went well!$RESET\n"
 
 # Install nodejs
