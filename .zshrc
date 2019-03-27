@@ -45,17 +45,12 @@ alias xnode='sudo killall node' # Kill all node instances
 
 alias fuck='echo "Running: \e[32msudo \e[35m\e[4m$(fc -ln -1)\e[0m" && sudo $(fc -ln -1)' # Re-run as sudo
 alias ys='yarn start -s' # Yarn start
-alias yd='yarn run start:lite' # Yarn start dev-lite (AB/DEU)
 alias y='yarn' # Yarn
 alias yr='yarn run' # Yarn run
+alias yys='y && ys' # Yarn install and run
 
-alias concepts='cd ~/projects/concepts-catalogue > /dev/null' # cd to concepts (can use $ ~C)
 alias fzv='vim $(fzf)' # Fuzzy-search and vim open
 alias fzps='fzf --preview "head -60 {} | pygmentize"' # Fzf with preview
-alias mci='mvn clean install' # Maven clean install
-alias mi='mvn install' # Maven install
-alias mc='mvn clean' # Maven clean
-alias qmvn='concepts && pushd components-generic && mi && popd && pushd catalogue-generator && mi && popd 2>/dev/null && concepts' # Quick mvn build
 
 function tldr() { # TLDR: colored less output
   pygmentize -g $@ | less -r
@@ -132,18 +127,14 @@ alias docs='~/zsh_docs.sh' # Display my functions docs
 
 # Other non-documented aliases
 alias scat='pygmentize -g'
-alias pacman='yes | sudo pacman'
-alias vim='nvim'
-alias serve='concepts && cd catalogue-generator/target/catalogue-generator && http-server >/dev/null'
-alias CHR='concepts && node utils/dev/css-hot-reload --port 8081'
-alias osrs='java -jar ~/Documents/RuneLite.jar --mode=OFF'
 
 # Load FZF, set fd as a default file finder (respects .gitignore)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 # Enable zsh syntax highlighting
-source ~/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source ~/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # Enable auto-closing of paired symbols
 source ~/zsh-autopair/autopair.zsh
