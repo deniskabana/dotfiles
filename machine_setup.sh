@@ -78,6 +78,12 @@ ifpacman zsh
 ifaptget zsh
 echo -e "$GREEN Installed zsh$RESET\n"
 
+
+#Install oh-my-zsh
+echo -e "$YELLOW Installing oh-my-zsh$RESET"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+echo -e "$GREEN Installed oh-my-zsh$RESET\n"
+
 # Clone my repository in home folder (includes zshrc and vim settings)
 echo -e "$CYAN Download dotfiles into ~$RESET"
 cd ~
@@ -116,8 +122,9 @@ echo -e "$GREEN Installed pure-prompt$RESET\n"
 # Download zsh plugins I use
 echo -e "$YELLOW Installing zsh plugins (autopair, syntax highlight)"
 git clone https://github.com/hlissner/zsh-autopair
-git clone https://github.com/zsh-users/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting
+git clone https://github.com/zdharma/fast-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions
 echo -e "$GREEN Installed zsh plugins$RESET\n"
 
 # Install fzf
@@ -135,19 +142,6 @@ ifpacman python-neovim
 ifaptget neovim
 ifaptget python3-neovim
 echo -e "$GREEN Installed neovim$RESET\n"
-
-# Install vim-plug
-echo -e "$YELLOW Installing vim-plug$RESET"
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-echo -e "$GREEN Installed vim-plug$RESET\n"
-
-# Clone nzenvim
-echo -e "$YELLOW Installing nzenvim$RESET"
-cd ~/.config
-git clone https://github.com/deniskabana/nzenvim nvim
-cd ~
-echo -e "$GREEN Installed nzenvim$RESET\n"
 
 # Install diff-so-fancy
 echo -e "$YELLOW Installing diff-so-fancy$RESET"
@@ -181,21 +175,6 @@ if command -v pip 2>/dev/null >/dev/null; then
   stat_success "pygmentize"
 fi
 echo -e "$GREEN Installed pygments$RESET\n"
-
-# Install java jre
-echo -e "$YELLOW Installing java$RESET"
-if command -v apt-get 2>/dev/null >/dev/null; then
-  ifaptget default-jre default-jdk
-fi
-if command -v pacman 2>/dev/null >/dev/null; then
-  ifpacman jre10-openjdk-headless jre10-openjdk jdk10-openjdk openjdk10-doc openjdk10-src
-fi
-echo -e "$GREEN Installed java$RESET\n"
-
-# Install oh-my-zsh
-echo -e "$YELLOW Installing oh-my-zsh$RESET"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/deniskabana/dotfiles/master/install-oh-my-zsh.sh)"
-echo -e "$GREEN Installed oh-my-zsh$RESET\n"
 
 # Wrap up
 clear
