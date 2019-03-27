@@ -179,6 +179,5 @@ echo -e "$GREEN Installed pygments$RESET\n"
 # Wrap up
 clear
 echo -e "$MAGENTA We are now all set, baby!$RESET"
-rm .zshrc
-mv .zshrc.pre-oh-my-zsh .zshrc
 env zsh -l
+zsh
