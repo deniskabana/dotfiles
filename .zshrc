@@ -1,7 +1,7 @@
 ZSH_THEME="" # No theme for pure-prompt
 export ZSH=$HOME/.oh-my-zsh # This had a reason, I'm sure => learn to document stuff early on, Denis
 # DISABLE_AUTO_TITLE="true" # Why did I disable this? ¯\(°_o)/¯
-plugins=(colored-man-pages zsh-autosuggestions)
+plugins=(colored-man-pages)
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/bin:$PATH"
 source $ZSH/oh-my-zsh.sh # What is this
 export NODE_ENV='development' # Sure feels nice having the default explicit
