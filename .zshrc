@@ -12,6 +12,7 @@ bindkey -v
 set blink-matching-paren on # Google this later
 
 # Aliases and functions - docs at ~/zsh_docs.sh or alias "docs"
+alias vim='nvim'
 alias gf='git fetch' # Git fetch
 alias gc='git commit' # Git commit
 alias gca='git commit --amend' # Git commit amend
@@ -134,6 +135,7 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 # Enable zsh syntax highlighting
 # source ~/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # Enable auto-closing of paired symbols
