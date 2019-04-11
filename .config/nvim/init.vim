@@ -6,7 +6,7 @@ let $LANG = 'en_US'
 let mapleader=","
 
 set showcmd                " Show (partial) command in status line
-set showmatch              " Show matching brackets
+"set showmatch              " Show matching brackets
 set noshowmode             " Don't show current mode
 set number                 " Show the line numbers on the left side
 set relativenumber         " Show relative line numbering
@@ -128,7 +128,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'scrooloose/nerdcommenter' " Easy commenting
   Plug 'tpope/vim-sleuth' " Automatically set file indentation
   Plug 'djoshea/vim-autoread' " Update changed files
-  Plug 'Valloric/MatchTagAlways' " Highlight matching symbol (e.g. bracket)
+  "Plug 'Valloric/MatchTagAlways' " Highlight matching symbol (e.g. bracket)
   Plug 'haya14busa/incsearch.vim' " Progressively show search results
   Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}} " VSCode's IntelliSense server in vim
 
@@ -149,6 +149,8 @@ call plug#end()
 "
 
 " Theme
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1 
+set termguicolors
 set background=dark
 colorscheme monokai-phoenix
 
@@ -156,17 +158,6 @@ colorscheme monokai-phoenix
 let g:closetag_filenames = "*.html,*.js,*.md,*.jsx,*.pug,*.php"
 
 " NERDTree settings
-" Exit vim if NERDTree is it's only open window
-autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
-function! s:CloseIfOnlyNerdTreeLeft()
-  if exists("t:NERDTreeBufName")
-    if bufwinnr(t:NERDTreeBufName) != -1
-      if winnr("$") == 1
-        q
-      endif
-    endif
-  endif
-endfunction
 let g:NERDTreeWinPos = "right" " Open NERDTree on the right side
 " Auto-open NERDTree when no file open
 au vimenter * if !argc() | NERDTree | endif
