@@ -41,6 +41,9 @@ apt install nodejs
 apt install npm
 npm install --global yarn
 
+# php
+apt install php
+
 # Install pure-prompt for zsh
 yarn global add pure-prompt
 
@@ -71,6 +74,9 @@ apt install python3-neovim
 
 # Diff so fancy
 yarn global add diff-so-fancy
+
+# http-server
+yarn global add http-server
 
 # Pygmentize (coloured commands tldr and scat)
 pip install Pygments
