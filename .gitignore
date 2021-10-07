@@ -1,8 +1,0 @@
-*
-
-!.gitignore
-!.gitconfig
-!.zshrc
-!zsh_docs.sh
-!machine_setup.sh
-!.config/nvim/init.vim
