@@ -102,10 +102,8 @@ alias gri='greb --interactive' # Interactive rebase
 alias grc='greb --continue' # Rebase continue
 alias gra='greb --abort' # Rebase abort
 alias grs='greb --skip' # Rebase skip current
-alias grib='gbl --format="%(refname:short)" | fzf --preview "git log --pretty=\"%Cblue%h %Cred%ar %Cgreen(%an) %Creset%s\" --first-parent {}" | xargs echo' # Interactive rebase to a commit from fuzzy selection (with preview)
-
-# Browse git entities with fuzzy search
-alias ghist='gbl --format="%(refname:short)" | fzf --preview "git log --pretty=\"%Cblue%h %Cred%ar %Cgreen(%an) %Creset%s\" --first-parent {}" >/dev/null'
+# TODO: Enable once I remember how I did commit hash surfing with commit detail expanded
+# alias grib='gbl --format="%(refname:short)" | fzf --preview "git log --pretty=\"%Cblue%h %Cred%ar %Cgreen(%an) %Creset%s\" --first-parent {}" | xargs echo' # Interactive rebase to a commit from fuzzy selection (with preview)
 
 # Node.js
 alias xnode='sudo killall node' # Kill all node instances
@@ -113,7 +111,8 @@ alias xnode='sudo killall node' # Kill all node instances
 
 
 
-
+# --------------------
+# --------------------
 
 # WORK IN PROGRESS (NOT TIDIED UP YET)
 # --------------------
