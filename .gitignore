@@ -1,0 +1,16 @@
+# IGNORE EVERYTHING...
+**/*
+# ...EXCEPT
+
+# Basic config
+!.gitignore
+!.config/
+!.zshrc
+
+# ZSH split config files
+!.zsh/
+!.zsh/config*
+
+# Kitty terminal
+!.config/kitty
+!.config/kitty/kitty.conf
