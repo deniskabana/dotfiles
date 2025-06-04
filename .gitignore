@@ -3,7 +3,7 @@
 # ...EXCEPT
 
 # Basic config
-!.gitignore
+!./.gitignore
 !.config/
 !.zshrc
 
@@ -14,3 +14,11 @@
 # Kitty terminal
 !.config/kitty
 !.config/kitty/kitty.conf
+
+# Neovim
+!.config/nvim
+!.config/nvim/*.lua
+!.config/nvim/lua
+!.config/nvim/lua/**/*
+# LazyVim
+!.config/nvim/*.json

@@ -1,1 +1,7 @@
-A config file for z shell (zsh) configured to work on UNIX / POSIX like platforms. Requires manual installation of a few packages - `fzf`, `fd`, `ripgrep` and `pure-prompt`. Only optimized for `oh-my-zsh`.
+Current configuration is suited mostly for macOS.
+
+> Optimized for Kitty terminal with neovim and zsh.
+
+---
+
+That said, my `.zshrc` contains a lot of useful aliases and functions that work on any Unix-like system, including Linux. You can copy the relevant parts to your own `.zshrc` file.
