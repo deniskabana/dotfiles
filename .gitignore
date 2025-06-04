@@ -20,5 +20,7 @@
 !.config/nvim/*.lua
 !.config/nvim/lua
 !.config/nvim/lua/**/*
+!.config/nvim/after
+!.config/nvim/after/**/*
 # LazyVim
 !.config/nvim/*.json
