@@ -61,6 +61,7 @@ alias groot='cd $(git rev-parse --show-toplevel)' # Fun way to get to the git ro
 
 # Git Status (see turbogit function in this file)
 alias g='turbogit' # Super minimal git status
+alias gs='g'
 alias gss='g status' # Full status
 
 # Git fetch
@@ -204,15 +205,27 @@ function push() {
 }
 
 # Git pull (fetch all with prune, then rebase)
-function pull() { # Git rebase pull
+function pull() {
   BRANCH="$(eval $GIT_BRANCH_NAME)"
   REMOTE="$(git remote)"
   echo "Pulling from branch \e[33m$BRANCH\e[0m on \e[34m$REMOTE\e[0m..."
   eval git fetch --all --prune && git rebase $REMOTE/$BRANCH
 }
 
+# Merge local or remote branch on current remote
+function mergre() {
+  REMOTE="$(git remote)"
+  BRANCH="$1"
+  if [ -z "$1" ]
+  then
+    BRANCH="$(git branch -r | fzf | sed -E 's/^[[:space:]]*[A-Za-z0-9]+\///')"
+  fi
+  echo "Merging branch \e[34m$BRANCH\e[0m on $REMOTE..."
+  eval git merge $2 $3 $4 $REMOTE $BRANCH
+}
+
 # Rebase onto a local or remote branch on current remote
-function rebase() { # Git rebase onto $1 or fzf result
+function rebase() {
   REMOTE="$(git remote)"
   BRANCH="$1"
   if [ -z "$1" ]
@@ -224,7 +237,7 @@ function rebase() { # Git rebase onto $1 or fzf result
 }
 
 # Force push with lease in current branch to current remote
-function force() { # Force push with lease
+function force() {
   BRANCH="$(eval $GIT_BRANCH_NAME)"
   REMOTE="$(git remote)"
   echo "Are you sure you want to force-push to \e[33m$BRANCH\e[0m? \e[34m(y/\e[32;1mN\e[0m)"
@@ -244,7 +257,7 @@ function finish() {
 }
 
 # Finish, but run tests first
-function testfinish() { # Add all, commit message $1 and push
+function testfinish() {
   yarn test && finish $@
 }
 
