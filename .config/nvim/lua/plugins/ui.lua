@@ -40,6 +40,7 @@ return {
       picker = {
         sources = {
           explorer = {
+            hidden = true,
             layout = { layout = { position = "right", width = 60 } },
             auto_close = true,
             matcher = { fuzzy = true },

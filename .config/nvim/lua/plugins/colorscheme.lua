@@ -2,7 +2,7 @@ return {
   -- add my own theme
   -- { "deniskabana/halender.nvim" },
   {
-    dir = "/Users/denis/projects/open-source/halender.nvim", -- use this instead
+    dir = "/Users/denis/projects/open-source/halender.nvim/editors/nvim", -- use this instead
     name = "halender.nvim",
   },
 

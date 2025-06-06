@@ -3,7 +3,7 @@
 # --------------------
 
 ZSH_THEME="spaceship" 
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH" # Unix paths
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/denis/Library/Python/3.9/bin:$PATH" # Unix paths
 export ZSH=$HOME/.oh-my-zsh
 set blink-matching-paren on # Highlight matching parentheses pairs
 
@@ -213,7 +213,7 @@ function pull() {
 }
 
 # Merge local or remote branch on current remote
-function mergre() {
+function merge() {
   REMOTE="$(git remote)"
   BRANCH="$1"
   if [ -z "$1" ]
