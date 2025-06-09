@@ -98,11 +98,47 @@ return {
 	-- Autoclose tags
 	{ "windwp/nvim-ts-autotag" },
 
+	-- ESLint LSP for diagnostics
+	-- {
+	-- 	"neovim/nvim-lspconfig",
+	-- 	event = { "BufReadPre", "BufReadPost", "BufNewFile" },
+	-- 	depedencies = { "mason.nvim" },
+	-- 	opts = {
+	-- 		diagnostics = {
+	-- 			underline = true,
+	-- 			update_in_insert = false,
+	-- 			virtual_text = false,
+	-- 			severity_sort = true,
+	-- 		},
+	-- 		codelens = {
+	-- 			enabled = false,
+	-- 		},
+	-- 		-- add any global capabilities here
+	-- 		capabilities = {
+	-- 			workspace = {
+	-- 				fileOperations = {
+	-- 					didRename = true,
+	-- 					willRename = true,
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 		-- options for vim.lsp.buf.format
+	-- 		-- `bufnr` and `filter` is handled by the LazyVim formatter,
+	-- 		-- but can be also overridden when specified
+	-- 		format = {
+	-- 			formatting_options = nil,
+	-- 			timeout_ms = nil,
+	-- 		},
+	-- 	},
+	--    config = function()
+	--    end,
+	-- },
+
 	-- Mason (LSP management)
 	{
 		"mason-org/mason.nvim",
 		build = ":MasonUpdate",
-		lazy = true,
+		dependencies = { "neovim/nvim-lspconfig" },
 		opts = {
 			ui = {
 				icons = {
@@ -119,10 +155,10 @@ return {
 	-- Make Mason LSPs work by default
 	{
 		"mason-org/mason-lspconfig.nvim",
-		enabled = true,
-		lazy = true,
-		opts = {
-			automatic_enable = false,
+		opts = {},
+		dependencies = {
+			{ "mason-org/mason.nvim", opts = {} },
+			"neovim/nvim-lspconfig",
 		},
 	},
 
@@ -132,10 +168,13 @@ return {
 		version = false, -- last release is way too old
 		event = "InsertEnter",
 		dependencies = {
+			"neovim/nvim-lspconfig",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-nvim-lsp-document-symbol",
 			"neovim/nvim-lspconfig",
+			"garyhurtz/cmp_kitty",
 		},
 		opts = function()
 			vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
@@ -173,21 +212,6 @@ return {
 				},
 				sorting = defaults.sorting,
 			}
-		end,
-	},
-
-	-- ESLint LSP for diagnostics
-	{
-		"neovim/nvim-lspconfig",
-		event = { "BufReadPre", "BufReadPost", "BufNewFile" },
-		depedencies = {
-			{ "mason-org/mason.nvim" },
-			{ "mason-org/mason-lspconfig.nvim" },
-			{ "saghen/blink.cmp" },
-		},
-		config = function()
-			require("mason").setup()
-			require("mason-lspconfig").setup()
 		end,
 	},
 }
