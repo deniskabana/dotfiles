@@ -30,6 +30,8 @@ map("n", "<leader>uI", function()
 	vim.treesitter.inspect_tree()
 	vim.api.nvim_input("I")
 end, { desc = "Inspect Tree" })
+map("n", "<leader>uc", "<cmd>CccPick<cr>", { desc = "Color picker" })
+map("n", "<leader>uC", "<cmd>CccConvert<cr>", { desc = "Color convert HEX<>HSL<>RGB" })
 
 -- Snacks / LazyGit
 map("n", "<leader>gg", "<CMD>lua Snacks.lazygit()<CR>", { desc = "LazyGit" })
@@ -38,8 +40,8 @@ map("n", "<leader>gg", "<CMD>lua Snacks.lazygit()<CR>", { desc = "LazyGit" })
 -- ==================================================
 
 map("n", "X", "<CMD>bp<bar>sp<bar>bn<bar>bd<CR>", { desc = "Close Buffer" }) -- Delete buffers by spammable key
-map("n", "<Tab>", "<cmd>:bnext<cr>", { desc = "Next Buffer " }) -- Change buffers with Tab / S-Tab
-map("n", "<S-Tab>", "<cmd>:bprevious<cr>", { desc = "Previous Buffer " })
+map("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next Buffer " }) -- Change buffers with Tab / S-Tab
+map("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "Previous Buffer " })
 map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })

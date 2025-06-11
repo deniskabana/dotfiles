@@ -1,4 +1,27 @@
 return {
+	-- Color picker
+	{
+		"uga-rosa/ccc.nvim",
+		config = function()
+			require("ccc").setup({
+				bar_len = 50,
+				point_char = "◯", -- Character used to represent the color point
+				point_color = "#ffffff",
+				bar_char = "▬",
+				highlighter = {
+					auto_enable = true, -- Enable highlighter automatically
+					lsp = true, -- Enable LSP highlighter
+				},
+				picker = {
+					win_opts = {
+						border = "rounded", -- Border style for the color picker window
+					},
+				},
+			})
+		end,
+	},
+
+	-- Whick-key - help with key bindings
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -14,19 +37,6 @@ return {
 				desc = "Buffer Local Keymaps (which-key)",
 			},
 		},
-	},
-
-	-- Color highlight and picker
-	{
-		"brenoprata10/nvim-highlight-colors",
-		config = function()
-			require("nvim-highlight-colors").setup({
-				render = "background", -- or "foreground"
-				enable_named_colors = true, -- enable named colors
-				enable_tailwind = true, -- enable tailwind colors
-				enable_hex = true, -- enable hex colors
-			})
-		end,
 	},
 
 	-- Git signs in signcolumn, also commands like Gitsigns blame (bind with which_key later)
