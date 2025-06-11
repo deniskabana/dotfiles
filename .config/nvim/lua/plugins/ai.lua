@@ -4,17 +4,14 @@ return {
 		cmd = "Copilot",
 		event = "InsertEnter",
 		config = function()
-			require("copilot").setup({})
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+			})
 		end,
 	},
 
 	{
-		"zbirenbaum/copilot-cmp",
-		dependencies = { "zbirenbaum/copilot.lua" },
-		config = function()
-			require("copilot_cmp").setup({
-				auto_trigger = true,
-			})
-		end,
+		"giuxtaposition/blink-cmp-copilot",
 	},
 }

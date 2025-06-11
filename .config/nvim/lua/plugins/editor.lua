@@ -17,6 +17,19 @@ return {
 	-- Git signs in signcolumn, also commands like Gitsigns blame (bind with which_key later)
 	{ "lewis6991/gitsigns.nvim" },
 
+	-- Blame line
+	{
+		"f-person/git-blame.nvim",
+		event = "VeryLazy",
+		opts = {
+			enabled = true, -- if you want to enable the plugin
+			message_template = "<date> • <author> • <summary>",
+			date_format = "%d.%m.%Y",
+			-- virtual_text_column = 1,
+			display_virtual_text = false,
+		},
+	},
+
 	-- Highlight and search TODOs
 	{
 		"folke/todo-comments.nvim",

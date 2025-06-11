@@ -66,18 +66,24 @@ return {
 			local opts = {
 				options = {
 					theme = "auto",
-					globalstatus = vim.o.laststatus == 3,
+					globalstatus = vim.o.laststatus == 2,
 					disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
 					section_separators = { left = "", right = "" },
 				},
 				sections = {
-					lualine_a = { "mode" },
+					lualine_a = { "filename" },
 					lualine_b = { "branch" },
-
 					lualine_c = {
-						{ "diagnostics" },
-						{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-						{ "filename" },
+						"diagnostics",
+						{
+							function()
+								return require("gitblame").get_current_blame_text()
+							end,
+							cond = function()
+								return require("gitblame").is_blame_text_available()
+							end,
+							color = { link = "Comment" },
+						},
 					},
 					lualine_x = {
 						Snacks.profiler.status(),
@@ -118,6 +124,7 @@ return {
 								end
 							end,
 						},
+						{ "copilot" },
 					},
 					lualine_y = {
 						{ "progress", separator = " ", padding = { left = 1, right = 0 } },
@@ -125,17 +132,29 @@ return {
 					},
 					lualine_z = {
 						function()
-							return " " .. os.date("%R")
+							return "  " .. os.date("%R")
 						end,
 					},
 				},
 				extensions = { "neo-tree", "lazy", "fzf" },
 			}
 
-			-- Add navic to Lualine's winbar
-			local navic = table.remove(opts.sections.lualine_c)
-			opts.winbar = { lualine_a = {}, lualine_b = { "filename" }, lualine_c = { navic } }
-			opts.inactive_winbar = { lualine_a = {}, lualine_b = { "filename" } }
+			opts.winbar = {
+				lualine_a = {},
+				lualine_b = {
+					{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+					"filename",
+				},
+				lualine_c = { "navic" },
+			}
+			opts.inactive_winbar = {
+				lualine_a = {},
+				lualine_b = {
+					{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+					"filename",
+				},
+				lualine_c = {},
+			}
 
 			return opts
 		end,
@@ -145,13 +164,6 @@ return {
 	{
 		"SmiteshP/nvim-navic",
 		lazy = true,
-		init = function()
-			require("lspconfig").clangd.setup({
-				on_attach = function(client, bufnr)
-					navic.attach(client, bufnr)
-				end,
-			})
-		end,
 		opts = function()
 			return {
 				separator = " ",
@@ -185,6 +197,9 @@ return {
 			end
 		end,
 	},
+
+	-- Copilot Lualine integration
+	{ "AndreM222/copilot-lualine" },
 
 	-- ui components
 	{ "MunifTanjim/nui.nvim", lazy = true },

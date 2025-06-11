@@ -98,42 +98,6 @@ return {
 	-- Autoclose tags
 	{ "windwp/nvim-ts-autotag" },
 
-	-- ESLint LSP for diagnostics
-	-- {
-	-- 	"neovim/nvim-lspconfig",
-	-- 	event = { "BufReadPre", "BufReadPost", "BufNewFile" },
-	-- 	depedencies = { "mason.nvim" },
-	-- 	opts = {
-	-- 		diagnostics = {
-	-- 			underline = true,
-	-- 			update_in_insert = false,
-	-- 			virtual_text = false,
-	-- 			severity_sort = true,
-	-- 		},
-	-- 		codelens = {
-	-- 			enabled = false,
-	-- 		},
-	-- 		-- add any global capabilities here
-	-- 		capabilities = {
-	-- 			workspace = {
-	-- 				fileOperations = {
-	-- 					didRename = true,
-	-- 					willRename = true,
-	-- 				},
-	-- 			},
-	-- 		},
-	-- 		-- options for vim.lsp.buf.format
-	-- 		-- `bufnr` and `filter` is handled by the LazyVim formatter,
-	-- 		-- but can be also overridden when specified
-	-- 		format = {
-	-- 			formatting_options = nil,
-	-- 			timeout_ms = nil,
-	-- 		},
-	-- 	},
-	--    config = function()
-	--    end,
-	-- },
-
 	-- Mason (LSP management)
 	{
 		"mason-org/mason.nvim",
@@ -160,58 +124,5 @@ return {
 			{ "mason-org/mason.nvim", opts = {} },
 			"neovim/nvim-lspconfig",
 		},
-	},
-
-	-- CMP (completion)
-	{
-		"hrsh7th/nvim-cmp",
-		version = false, -- last release is way too old
-		event = "InsertEnter",
-		dependencies = {
-			"neovim/nvim-lspconfig",
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-nvim-lsp-document-symbol",
-			"neovim/nvim-lspconfig",
-			"garyhurtz/cmp_kitty",
-		},
-		opts = function()
-			vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-			local cmp = require("cmp")
-			local defaults = require("cmp.config.default")()
-			local auto_select = true
-			return {
-				auto_brackets = {}, -- configure any filetype to auto add brackets
-				completion = {
-					completeopt = "menu,menuone,noinsert" .. (auto_select and "" or ",noselect"),
-				},
-				preselect = auto_select and cmp.PreselectMode.Item or cmp.PreselectMode.None,
-				mapping = cmp.mapping.preset.insert({
-					["<C-b>"] = cmp.mapping.scroll_docs(-4),
-					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-					["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-					-- ["<C-Space>"] = cmp.mapping.complete(),
-					["<C-CR>"] = function(fallback)
-						cmp.abort()
-						fallback()
-					end,
-				}),
-				sources = cmp.config.sources({
-					{ name = "nvim-lsp" },
-					{ name = "path" },
-				}, {
-					{ name = "buffer" },
-				}),
-				experimental = {
-					-- only show ghost text when we show ai completions
-					ghost_text = vim.g.ai_cmp and {
-						hl_group = "CmpGhostText",
-					} or false,
-				},
-				sorting = defaults.sorting,
-			}
-		end,
 	},
 }
