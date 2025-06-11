@@ -30,11 +30,38 @@ return {
 					enabled = false,
 				},
 			},
-			picker = { enabled = true },
+			picker = {
+				enabled = true,
+				sources = {
+					explorer = {
+						hidden = true,
+						layout = { layout = { position = "right", width = 60 } },
+						auto_close = true,
+						matcher = { fuzzy = true },
+						win = { list = { wo = { number = true, relativenumber = true } } },
+					},
+				},
+			},
 			rename = { enabled = true },
 		},
 		keys = {
 			-- Top Pickers & Explorer
+			{
+				"<leader>fe",
+				function()
+					Snacks.explorer({ cwd = LazyVim.root() })
+				end,
+				desc = "Explorer Snacks (root dir)",
+			},
+			{
+				"<leader>fE",
+				function()
+					Snacks.explorer()
+				end,
+				desc = "Explorer Snacks (cwd)",
+			},
+			{ "<leader>e", "<leader>fe", desc = "Explorer Snacks (root dir)", remap = true },
+			{ "<leader>E", "<leader>fE", desc = "Explorer Snacks (cwd)", remap = true },
 			{
 				"<leader><space>",
 				function()

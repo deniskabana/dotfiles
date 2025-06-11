@@ -30,10 +30,6 @@ end
 
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
--- file explorers
-map("n", "<leader>e", "<CMD>Oil --float<CR>", { desc = "File explorer (oil.nvim)" })
-map("n", "<leader>E", "<CMD>Neotree<CR>", { desc = "File tree (neotree)" })
-
 -- better up/down
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
@@ -117,11 +113,6 @@ end, { desc = "Quickfix List" })
 map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 
--- formatting
-map({ "n", "v" }, "<leader>cf", function()
-	LazyVim.format({ force = true })
-end, { desc = "Format" })
-
 -- diagnostic
 local diagnostic_goto = function(next, severity)
 	local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
@@ -150,3 +141,29 @@ end, { desc = "Inspect Tree" })
 
 -- Snacks / LazyGit
 map("n", "<leader>lg", "<CMD>lua Snacks.lazygit()<CR>", { desc = "LazyGit" })
+
+-- LSP (from LazyVim)
+map("n", "<leader>cl", function()
+	Snacks.picker.lsp_config()
+end, { desc = "Lsp Info" })
+map("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
+map("n", "gr", vim.lsp.buf.references, { desc = "References", nowait = true })
+map("n", "gI", vim.lsp.buf.implementation, { desc = "Goto Implementation" })
+map("n", "gy", vim.lsp.buf.type_definition, { desc = "Goto T[y]pe Definition" })
+map("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" })
+map("n", "K", function()
+	return vim.lsp.buf.hover()
+end, { desc = "Hover" })
+map("n", "gK", function()
+	return vim.lsp.buf.signature_help()
+end, { desc = "Signature Help" })
+map("i", "<c-k>", function()
+	return vim.lsp.buf.signature_help()
+end, { desc = "Signature Help" })
+map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
+map({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, { desc = "Run Codelens" })
+map("n", "<leader>cC", vim.lsp.codelens.refresh, { desc = "Refresh & Display Codelens" })
+map("n", "<leader>cR", function()
+	Snacks.rename.rename_file()
+end, { desc = "Rename File" })
+map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename" })
