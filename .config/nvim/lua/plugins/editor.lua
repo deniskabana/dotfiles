@@ -14,6 +14,19 @@ return {
 		},
 	},
 
+	-- Color highlight and picker
+	{
+		"brenoprata10/nvim-highlight-colors",
+		config = function()
+			require("nvim-highlight-colors").setup({
+				render = "background", -- or "foreground"
+				enable_named_colors = true, -- enable named colors
+				enable_tailwind = true, -- enable tailwind colors
+				enable_hex = true, -- enable hex colors
+			})
+		end,
+	},
+
 	-- Git signs in signcolumn, also commands like Gitsigns blame (bind with which_key later)
 	{ "lewis6991/gitsigns.nvim" },
 

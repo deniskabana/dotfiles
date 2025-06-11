@@ -82,7 +82,7 @@ return {
 							cond = function()
 								return require("gitblame").is_blame_text_available()
 							end,
-							color = { link = "Comment" },
+							color = { fg = "#666666" },
 						},
 					},
 					lualine_x = {
