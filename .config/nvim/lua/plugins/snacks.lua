@@ -5,7 +5,6 @@ return {
 		lazy = false,
 		---@type snacks.Config
 		opts = {
-			-- bigfile = { enabled = true },
 			dashboard = {
 				enabled = true,
 				sections = {
@@ -49,7 +48,7 @@ return {
 			{
 				"<leader>fe",
 				function()
-					Snacks.explorer({ cwd = LazyVim.root() })
+					Snacks.explorer({ cwd = vim.fn.getcwd() })
 				end,
 				desc = "Explorer Snacks (root dir)",
 			},
@@ -60,8 +59,6 @@ return {
 				end,
 				desc = "Explorer Snacks (cwd)",
 			},
-			{ "<leader>e", "<leader>fe", desc = "Explorer Snacks (root dir)", remap = true },
-			{ "<leader>E", "<leader>fE", desc = "Explorer Snacks (cwd)", remap = true },
 			{
 				"<leader><space>",
 				function()
@@ -91,18 +88,11 @@ return {
 				desc = "Command History",
 			},
 			{
-				"<leader>n",
+				"<leader>fn",
 				function()
 					Snacks.picker.notifications()
 				end,
 				desc = "Notification History",
-			},
-			{
-				"<leader>e",
-				function()
-					Snacks.explorer()
-				end,
-				desc = "File Explorer",
 			},
 			-- find
 			{

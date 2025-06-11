@@ -2,7 +2,9 @@ return {
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = {
+			preset = "helix",
+		},
 		keys = {
 			{
 				"<leader>?",
@@ -51,7 +53,11 @@ return {
 	},
 
 	-- Smooth scroll
-	{ "psliwka/vim-smoothie" },
+	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		opts = {},
+	},
 
 	---@module "neominimap.config.meta"
 	{
