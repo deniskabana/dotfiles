@@ -46,6 +46,13 @@ return {
 		keys = {
 			-- Top Pickers & Explorer
 			{
+				"<leader>e",
+				function()
+					Snacks.explorer({ cwd = vim.fn.getcwd() })
+				end,
+				desc = "Explorer Snacks",
+			},
+			{
 				"<leader>fe",
 				function()
 					Snacks.explorer({ cwd = vim.fn.getcwd() })

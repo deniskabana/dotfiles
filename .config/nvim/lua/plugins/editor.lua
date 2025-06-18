@@ -9,8 +9,9 @@ return {
 				point_color = "#ffffff",
 				bar_char = "▬",
 				highlighter = {
-					auto_enable = true, -- Enable highlighter automatically
-					lsp = true, -- Enable LSP highlighter
+					enabled = false,
+					auto_enable = false, -- Enable highlighter automatically
+					lsp = false, -- Enable LSP highlighter
 				},
 				picker = {
 					win_opts = {
@@ -18,6 +19,15 @@ return {
 					},
 				},
 			})
+		end,
+	},
+
+	-- Color highlighter
+	{
+		"norcalli/nvim-colorizer.lua",
+		config = function()
+			vim.opt.termguicolors = true -- True color support
+			require("colorizer").setup()
 		end,
 	},
 
